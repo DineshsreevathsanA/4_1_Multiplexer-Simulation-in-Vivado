@@ -35,50 +35,44 @@ To design and simulate a 4:1 Multiplexer (MUX) using Verilog HDL in four differe
 
 ### 4:1 MUX Gate-Level Implementation
 ```verilog
-// Gate Level Modelling - Skeleton
-module mux4_gate (
-    input  wire I0, I1, I2, I3,
-    input  wire S0, S1,
-    output wire Y
-);
-    // Declare internal wires
-
-    // Write NOT gates
-
-    // Write AND gates
-
-    // Write OR gate
-
+module MUX_41(I, S, Y);
+input [3:0] I;
+input [1:0] S;
+output Y;
+wire [3:0]W;
+and (W[0], I[0], ~S[1], ~S[0]);
+and (W[1], I[1], ~S[1], S0);
+and (W[2], I[2], S[1], ~S[0]);
+and (W[3], I[3], S[1], S[0]);
+or (Y, W[0], W[1], W[2], W[3]);
 endmodule
 
 ```
 ### 4:1 MUX Gate-Level Implementation- Testbench
 ```verilog
-// Testbench Skeleton
-`timescale 1ns/1ps
-module tb_mux4_gate;
-
-    // Declare testbench signals
-    reg I0, I1, I2, I3;
-    reg S0, S1;
-    wire Y;
-
-    // Instantiate DUT
-    mux4_gate uut (
-        .I0(I0), .I1(I1), .I2(I2), .I3(I3),
-        .S0(S0), .S1(S1),
-        .Y(Y)
-    );
-
-    initial begin
-        // Initialize inputs
-
-        // Apply test cases
-
-        // Stop simulation
-        #10 $stop;
-    end
-
+`timescale 1ns / 1ps
+module MUX_41_tb;
+reg [3:0]I;
+reg [1:0]S;
+wire Y;
+MUX_41 uut(I,S,Y);
+initial
+begin
+I=4'b1001;
+S=2'b00;
+#10;
+$display("selection is %b %b ,output : %b",S[1],S[0],Y);
+S=2'b01;
+#10;
+$display("selection is %b %b ,output : %b",S[1],S[0],Y);
+S=2'b10;
+#10;
+$display("selection is %b %b ,output : %b",S[1],S[0],Y);
+S=2'b11;
+#10;
+$display("selection is %b %b ,output : %b",S[1],S[0],Y);
+$finish;
+end
 endmodule
 ```
 ## Simulated Output Gate Level Modelling
@@ -88,44 +82,42 @@ _______ Here Paste the Simulated output  ___________
 ---
 ### 4:1 MUX Data flow Modelling
 ```verilog
-// Dataflow Modelling - Skeleton
-module mux4_dataflow (
-    input  wire I0, I1, I2, I3,
-    input  wire S0, S1,
-    output wire Y
-);
-    // Write assign statement using operators
-
+module mux41(I, S, Y);
+input [3:0] I;
+input [1:0] S;
+output Y;
+assign Y = (~S[1] & ~S[0] & I[0]) |
+ (~S[1] & S[0] & I[1]) |
+ ( S[1] & ~S[0] & I[2]) |
+ ( S[1] & S[0] & I[3]);
 endmodule
 
 ```
 ### 4:1 MUX Data flow Modelling- Testbench
 ```verilog
-// Testbench Skeleton
-`timescale 1ns/1ps
-module tb_mux4_dataflow;
-
-    // Declare testbench signals
-    reg I0, I1, I2, I3;
-    reg S0, S1;
-    wire Y;
-
-    // Instantiate DUT
-    mux4_dataflow uut (
-        .I0(I0), .I1(I1), .I2(I2), .I3(I3),
-        .S0(S0), .S1(S1),
-        .Y(Y)
-    );
-
-    initial begin
-        // Initialize inputs
-
-        // Apply test cases
-
-        // Stop simulation
-        #10 $stop;
-    end
-
+`timescale 1ns / 1ps
+module MUX_41_tb;
+reg [3:0]I;
+reg [1:0]S;
+wire Y;
+MUX_41 uut(I,S,Y);
+initial
+begin
+I=4'b1001;
+S=2'b00;
+#10;
+$display("selection is %b %b ,output : %b",S[1],S[0],Y);
+S=2'b01;
+#10;
+$display("selection is %b %b ,output : %b",S[1],S[0],Y);
+S=2'b10;
+#10;
+$display("selection is %b %b ,output : %b",S[1],S[0],Y);
+S=2'b11;
+#10;
+$display("selection is %b %b ,output : %b",S[1],S[0],Y);
+$finish;
+end
 endmodule
 
 ```
@@ -136,48 +128,47 @@ _______ Here Paste the Simulated output  ___________
 ---
 ### 4:1 MUX Behavioral Implementation
 ```verilog
-module mux4_to_1_behavioral (
-    input wire A,
-    input wire B,
-    input wire C,
-    input wire D,
-    input wire S0,
-    input wire S1,
-    output reg Y
-);
-    always @(*) begin
-        
-    end
+module MUX_41(I,S,Y);
+input [3:0]I;
+input [1:0]S;
+output reg Y;
+always @(I,S)
+ begin
+ case(S)
+ 2'b00:Y=I[0];
+ 2'b01:Y=I[1];
+ 2'b10:Y=I[2];
+ 2'b11:Y=I[3];
+ endcase
+ end
 endmodule
 ```
 ### 4:1 MUX Behavioral Modelling- Testbench
 ```verilog
-// Testbench Skeleton
-`timescale 1ns/1ps
-module tb_mux4_behavioral;
-
-    // Declare testbench signals
-    reg I0, I1, I2, I3;
-    reg S0, S1;
-    wire Y;
-
-    // Instantiate DUT
-    mux4_behavioral uut (
-        .I0(I0), .I1(I1), .I2(I2), .I3(I3),
-        .S0(S0), .S1(S1),
-        .Y(Y)
-    );
-
-    initial begin
-        // Initialize inputs
-
-        // Apply test cases
-
-        // Stop simulation
-        #10 $stop;
-    end
-
-endmodule
+`timescale 1ns / 1ps
+module MUX_41_tb;
+reg [3:0]I;
+reg [1:0]S;
+wire Y;
+MUX_41 uut(I,S,Y);
+initial
+begin
+I=4'b1001;
+S=2'b00;
+#10;
+$display("selection is %b %b ,output : %b",S[1],S[0],Y);
+S=2'b01;
+#10;
+$display("selection is %b %b ,output : %b",S[1],S[0],Y);
+S=2'b10;
+#10;
+$display("selection is %b %b ,output : %b",S[1],S[0],Y);
+S=2'b11;
+#10;
+$display("selection is %b %b ,output : %b",S[1],S[0],Y);
+$finish;
+end
+endmodule 
 
 ```
 ## Simulated Output Behavioral Modelling
@@ -191,50 +182,47 @@ _______ Here Paste the Simulated output  ___________
 
 
 ```verilog
-module mux2_to_1 (
-    input wire A,
-    input wire B,
-    input wire S,
-    output wire Y
-);
-    assign Y = S ? B : A;
-endmodule
-
-module mux4_to_1_structural (
-    input wire A,
-    input wire B,
-    input wire C,
-    input wire D,
-    input wire S0,
-    input wire S1,
-    output wire Y
-);
-
-
-
-
+module mux_41(I, S, Y);
+input [3:0] I;
+input [1:0] S;
+output Y;
+wire [3:0] w;
+not (nS0, S[0]);
+not (nS1, S[1]);
+and (w[0], I[0], ~S[1], ~S[0]);
+and (w[1], I[1], ~S[1], S[0]);
+and (w[2], I[2], S[1], ~S[0]);
+and (w[3], I[3], S[1], S[0]);
+or (Y, w[0], w[1], w[2], w[3]);
 endmodule
 ```
 ### Testbench Implementation
 ```verilog
 `timescale 1ns / 1ps
+module MUX_41_tb;
+reg [3:0]I;
+reg [1:0]S;
+wire Y;
+MUX_41 uut(I,S,Y);
+initial
+begin
+I=4'b1001;
+S=2'b00;
+#10;
+$display("selection is %b %b ,output : %b",S[1],S[0],Y);
+S=2'b01;
+#10;
+$display("selection is %b %b ,output : %b",S[1],S[0],Y);
+S=2'b10;
+#10;
+$display("selection is %b %b ,output : %b",S[1],S[0],Y);
+S=2'b11;
+#10;
+$display("selection is %b %b ,output : %b",S[1],S[0],Y);
+$finish;
+end
+endmodule 
 
-module mux4_to_1_tb;
-    reg A, B, C, D, S0, S1;
-    wire Y_gate, Y_dataflow, Y_behavioral, Y_structural;
-
-    
-
-    initial begin
-        A = 0; B = 0; C = 0; D = 0; S0 = 0; S1 = 0;
-
-      
-        #10 $stop;
-    end
-
-   
-    end
-endmodule
 ```
 ## Simulated Output Structural Modelling
 
