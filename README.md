@@ -76,7 +76,8 @@ end
 endmodule
 ```
 ## Simulated Output Gate Level Modelling
-![Uploading Screenshot (66).png…]()
+<img width="1920" height="1200" alt="Screenshot (66)" src="https://github.com/user-attachments/assets/06eb0e21-a6ba-44a7-a1f7-a05a76d345fc" />
+
 
 
 
